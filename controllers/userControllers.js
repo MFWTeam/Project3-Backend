@@ -1,4 +1,6 @@
 const User = require("../models/user");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const saveUser = (req, res) => {
   const newUser = new User({
