@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const storeSchema = new Schema({
   name: { type: String, required: true },
-  managerName: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  managerName: { type: String, required: true },
   isDeleted: { type: Boolean, default: false },
 });
 

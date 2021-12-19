@@ -6,9 +6,8 @@ const productSchema = new Schema({
   barcode: { type: String, required: true },
   price: { type: Number, required: true },
   quantity: { type: Number, required: true },
-  storeName: { type: mongoose.Schema.Types.ObjectId, ref: "Store", required: true },
-//   role: { type: mongoose.Schema.objectId, ref: "Role" },
-  isDeleted: {type: Boolean, default: false},
+  storeName: { type: String, required: true },
+  isDeleted: { type: Boolean, default: false },
 });
 
 const Product = mongoose.model("Product", productSchema);

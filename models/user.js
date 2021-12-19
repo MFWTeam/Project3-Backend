@@ -7,8 +7,8 @@ const userSchema = new Schema({
   password: { type: String, required: true },
   phone: { type: String },
   address: { type: String },
-//   role: { type: mongoose.Schema.objectId, ref: "Role" },
-  isDeleted: {type: Boolean, default: false},
+  role: { type: String, required: true },
+  isDeleted: { type: Boolean, default: false },
 });
 
 const User = mongoose.model("User", userSchema);
