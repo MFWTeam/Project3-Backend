@@ -13,19 +13,15 @@ const saveStore = (req, res) => {
 };
 
 const showStores = (req, res) => {
-  Store.find({ isDeleted: false })
-    .populate("managerName")
-    .exec((err, store) => {
-      res.json(store);
-    });
+  Store.find({ isDeleted: false }, (err, store) => {
+    res.json(store);
+  });
 };
 
 const showStore = (req, res) => {
-  Store.find({ _id: req.params.id, isDeleted: false })
-    .populate("managerName")
-    .exec((err, store) => {
-      res.json(store);
-    });
+  Store.find({ _id: req.params.id, isDeleted: false }, (err, store) => {
+    res.json(store);
+  });
 };
 
 const deleteStore = (req, res) => {
@@ -50,12 +46,11 @@ const updateStore = (req, res) => {
       phone: req.body.phone,
       role: req.body.role,
       address: req.body.address,
-    }
-  )
-    .populate("managerName")
-    .exec((err, store) => {
+    },
+    (err, store) => {
       res.json(store);
-    });
+    }
+  );
 };
 
 module.exports = { saveStore, showStores, deleteStore, updateStore, showStore };
