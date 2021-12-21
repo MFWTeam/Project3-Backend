@@ -27,6 +27,15 @@ const showProduct = (req, res) => {
   });
 };
 
+const showProductByName = (req, res) => {
+  Product.find(
+    { storeName: req.params.name, isDeleted: false },
+    (err, product) => {
+      res.json(product);
+    }
+  );
+};
+
 const deleteProduct = (req, res) => {
   Product.findByIdAndUpdate(
     { _id: req.params.id },
@@ -61,4 +70,5 @@ module.exports = {
   showProduct,
   deleteProduct,
   updateProduct,
+  showProductByName,
 };
