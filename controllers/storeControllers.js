@@ -24,6 +24,12 @@ const showStore = (req, res) => {
   });
 };
 
+const showStoreByName = (req, res) => {
+  Store.find({ name: req.params.name, isDeleted: false }, (err, store) => {
+    res.json(store);
+  });
+};
+
 const deleteStore = (req, res) => {
   Store.findByIdAndUpdate(
     { _id: req.params.id },
@@ -49,4 +55,11 @@ const updateStore = (req, res) => {
   );
 };
 
-module.exports = { saveStore, showStores, deleteStore, updateStore, showStore };
+module.exports = {
+  saveStore,
+  showStores,
+  deleteStore,
+  updateStore,
+  showStore,
+  showStoreByName,
+};
