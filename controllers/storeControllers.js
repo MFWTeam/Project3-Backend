@@ -41,11 +41,7 @@ const updateStore = (req, res) => {
     { _id: req.params.id },
     {
       name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
-      phone: req.body.phone,
-      role: req.body.role,
-      address: req.body.address,
+      managerName: req.body.managerName,
     },
     (err, store) => {
       res.json(store);
