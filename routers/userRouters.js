@@ -7,13 +7,16 @@ const {
   updateUser,
   showUser,
   signInUser,
+  updateUserPassword,
 } = require("../controllers/userControllers");
+const { authenticateToken } = require("../auth/userAuthenticate");
 
-userRouter.post("/save", saveUser);
+userRouter.post("/save", authenticateToken, saveUser);
 userRouter.get("/show", showUsers);
 userRouter.get("/show/:id", showUser);
-userRouter.put("/delete/:id", deleteUser);
-userRouter.put("/update/:id", updateUser);
+userRouter.put("/delete/:id", authenticateToken, deleteUser);
+userRouter.put("/update/:id", authenticateToken, updateUser);
+userRouter.put("/updatePassword/:id", authenticateToken, updateUserPassword);
 userRouter.post("/signIn", signInUser);
 
 module.exports = userRouter;

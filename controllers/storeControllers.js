@@ -1,6 +1,7 @@
 const Store = require("../models/store");
 
 const saveStore = (req, res) => {
+  const token = req.user;
   const newStore = new Store({
     name: req.body.name,
     managerName: req.body.managerName,
@@ -8,7 +9,7 @@ const saveStore = (req, res) => {
 
   newStore
     .save()
-    .then((result) => res.json(result))
+    .then((result) => res.json({ result: result, token: token }))
     .catch((err) => console.log(err));
 };
 
@@ -31,18 +32,20 @@ const showStoreByName = (req, res) => {
 };
 
 const deleteStore = (req, res) => {
+  const token = req.user;
   Store.findByIdAndUpdate(
     { _id: req.params.id },
     {
       isDeleted: true,
     },
     (err, store) => {
-      res.json(store);
+      res.json({ result: store, token: token });
     }
   );
 };
 
 const updateStore = (req, res) => {
+  const token = req.user;
   Store.findByIdAndUpdate(
     { _id: req.params.id },
     {
@@ -50,7 +53,7 @@ const updateStore = (req, res) => {
       managerName: req.body.managerName,
     },
     (err, store) => {
-      res.json(store);
+      res.json({ result: store, token: token });
     }
   );
 };
