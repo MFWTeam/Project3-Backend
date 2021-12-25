@@ -119,6 +119,11 @@ function signInUser(req, res) {
   );
 }
 
+function getUserDataFromToken(req, res) {
+  const token = req.user;
+  res.json({ token: token });
+}
+
 module.exports = {
   saveUser,
   showUsers,
@@ -127,4 +132,5 @@ module.exports = {
   showUser,
   signInUser,
   updateUserPassword,
+  getUserDataFromToken,
 };
