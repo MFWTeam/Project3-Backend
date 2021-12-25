@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 const saveUser = (req, res) => {
+  const token = req.user;
   const newUser = new User({
     name: req.body.name,
     email: req.body.email,
@@ -14,7 +15,7 @@ const saveUser = (req, res) => {
 
   newUser
     .save()
-    .then((result) => res.json(result))
+    .then((result) => res.json({ result: result, token: token }))
     .catch((err) => console.log(err));
 };
 
@@ -31,18 +32,20 @@ const showUser = (req, res) => {
 };
 
 const deleteUser = (req, res) => {
+  const token = req.user;
   User.findByIdAndUpdate(
     { _id: req.params.id },
     {
       isDeleted: true,
     },
     (err, user) => {
-      res.json(user);
+      res.json({ result: user, token: token });
     }
   );
 };
 
 const updateUser = (req, res) => {
+  const token = req.user;
   User.findByIdAndUpdate(
     { _id: req.params.id },
     {
@@ -54,10 +57,38 @@ const updateUser = (req, res) => {
       address: req.body.address,
     },
     (err, user) => {
-      res.json(user);
+      res.json({ result: user, token: token });
     }
   );
 };
+
+async function updateUserPassword(req, res) {
+  const token = req.user;
+  User.findOne({ _id: req.params.id }, async (err, result) => {
+    if (result === null) {
+      return res.status(400).send("Cannot find user");
+    }
+
+    try {
+      if (await bcrypt.compare(req.body.prePassword, result.password)) {
+        User.findByIdAndUpdate(
+          { _id: req.params.id },
+          {
+            password: await bcrypt.hash(req.body.newPassword, 10),
+          },
+          (err, user) => {
+            res.json({ result: user, token: token });
+          }
+        );
+      } else {
+        res.json({ message: "current password is incorrect" });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).send();
+    }
+  });
+}
 
 function signInUser(req, res) {
   User.findOne(
@@ -95,4 +126,5 @@ module.exports = {
   updateUser,
   showUser,
   signInUser,
+  updateUserPassword,
 };

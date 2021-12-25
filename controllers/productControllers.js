@@ -1,6 +1,8 @@
 const Product = require("../models/product");
 
 const saveProduct = (req, res) => {
+  const token = req.user;
+
   const newProduct = new Product({
     name: req.body.name,
     barcode: req.body.barcode,
@@ -11,7 +13,7 @@ const saveProduct = (req, res) => {
 
   newProduct
     .save()
-    .then((result) => res.json(result))
+    .then((result) => res.json({ result: result, token: token }))
     .catch((err) => console.log(err));
 };
 
@@ -37,18 +39,22 @@ const showProductByName = (req, res) => {
 };
 
 const deleteProduct = (req, res) => {
+  const token = req.user;
+
   Product.findByIdAndUpdate(
     { _id: req.params.id },
     {
       isDeleted: true,
     },
     (err, product) => {
-      res.json(product);
+      res.json({ result: product, token: token });
     }
   );
 };
 
 const updateProduct = (req, res) => {
+  const token = req.user;
+
   Product.findByIdAndUpdate(
     { _id: req.params.id },
     {
@@ -59,7 +65,7 @@ const updateProduct = (req, res) => {
       storeName: req.body.storeName,
     },
     (err, product) => {
-      res.json(product);
+      res.json({ result: product, token: token });
     }
   );
 };
